@@ -9,7 +9,19 @@
   "scripts": {
     "test": "ava"
   },
-  "keywords": [],
+  "keywords": [
+    "dlc",
+    "DLC",
+    "decrypt",
+    "read",
+    "download",
+    "container",
+    "links",
+    "url",
+    "cli",
+    "command",
+    "line"
+  ],
   "author": "Dominik Winter <dominik.winter92@gmail.com>",
   "license": "MIT",
   "eslintConfig": {
