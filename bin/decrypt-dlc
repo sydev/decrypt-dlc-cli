@@ -1,0 +1,27 @@
+#! /usr/bin/env node
+
+const decrypt = require('decrypt-dlc');
+const fs      = require('fs');
+const path    = require('path');
+const program = require('commander');
+
+
+program
+  .version('1.0.0')
+  .usage('[options] <file>')
+  .option('-o, --output <file>', 'File to store decrypted urls in. (Default: urls.txt)', path.join(process.cwd(), 'urls.txt'))
+  .parse(process.argv);
+
+
+decrypt(program.args[0], (err, content) => {
+  let urls = null;
+
+  if (content.hasOwnProperty('success')) {
+    urls = content.success.links.slice(1).join('\n');
+
+    fs.writeFile(program.output, urls, (err) => {
+      if (err) throw err;
+      console.log(`Successfully stored urls in ${program.output}`);
+    });
+  }
+});
