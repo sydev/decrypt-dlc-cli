@@ -9,6 +9,7 @@
 - [Usage](#usage)
 - [Development](#development)
 -	[Release Notes](#release-notes)
+- [Related](#related)
 
 
 ## Installation
@@ -43,3 +44,7 @@ $ npm test
 ## Release Notes
 
 - ```0.0.1``` - Initial Release
+
+## Related
+
+[decrypt-dlc](https://github.com/sydev/decrypt-dlc)
