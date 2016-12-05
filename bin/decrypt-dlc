@@ -2,6 +2,8 @@
 
 const decrypt = require('decrypt-dlc');
 const fs      = require('fs');
+const isFile  = require('is-file');
+const isUrl   = require('is-url');
 const path    = require('path');
 const program = require('commander');
 
@@ -12,16 +14,57 @@ program
   .option('-o, --output <file>', 'File to store decrypted urls in. (Default: urls.txt)', path.join(process.cwd(), 'urls.txt'))
   .parse(process.argv);
 
+let urls = null;
 
-decrypt(program.args[0], (err, content) => {
-  let urls = null;
+/**
+ * Store the string containing the urls in a file.
+ * @param  {String} urls String of urls
+ */
+function storeUrlsInFile(urls) {
+  fs.writeFile(program.output, urls, (err) => {
+    if (err) throw err;
+    console.log(`Successfully stored urls in ${program.output}`);
+  });
+}
 
-  if (content.hasOwnProperty('success')) {
-    urls = content.success.links.slice(1).join('\n');
+/**
+ * Check if file has a .dlc extension
+ * @param  {String}  file path to a file
+ * @return {Boolean}      Checks wether if the file is a .dlc file or not
+ */
+function isDLCFile(file) {
+  let ext = path.extname(file);
+  return (ext === '.dlc');
+}
 
-    fs.writeFile(program.output, urls, (err) => {
+
+
+
+if (isFile(program.args[0]) && isDLCFile(program.args[0])) {
+  decrypt.upload(program.args[0], (err, response) => {
+    if (err) throw err;
+
+    urls = response.success.links.slice(1).join('\n');
+    storeUrlsInFile(urls);
+  });
+} else if (isFile(program.args[0]) && !isDLCFile(program.args[0])) {
+  fs.readFile(program.args[0], 'utf-8', (err, content) => {
+    if (err) throw err;
+
+    decrypt.paste(content, (err, response) => {
       if (err) throw err;
-      console.log(`Successfully stored urls in ${program.output}`);
+
+      urls = response.success.links.slice(1).join('\n');
+      storeUrlsInFile(urls);
     });
-  }
-});
+  });
+} else if (isUrl(program.args[0])) {
+  decrypt.container(program.args[0], (err, response) => {
+    if (err) throw err;
+
+    urls = response.success.links.slice(1).join('\n');
+    storeUrlsInFile(urls);
+  });
+} else {
+  console.error('Parameter must be url or path to a file.');
+}
