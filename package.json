@@ -1,6 +1,6 @@
 {
   "name": "decrypt-dlc-cli",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "",
   "main": "lib/index.js",
   "bin": {
@@ -32,7 +32,9 @@
   },
   "dependencies": {
     "commander": "^2.9.0",
-    "decrypt-dlc": "^0.0.1"
+    "decrypt-dlc": "^1.0.0",
+    "is-file": "^1.0.0",
+    "is-url": "^1.2.2"
   },
   "devDependencies": {
     "ava": "^0.17.0",
