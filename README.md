@@ -43,6 +43,10 @@ $ npm test
 
 ## Release Notes
 
+- ```0.1.0```
+  - Add the new API-Usage from [decrypt-dlc](https://github.com/sydev/decrypt-dlc)
+  - Add more endpoints
+  - Add more test cases
 - ```0.0.1``` - Initial Release
 
 ## Related
