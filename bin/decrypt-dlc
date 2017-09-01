@@ -44,7 +44,7 @@ if (isFile(program.args[0]) && isDLCFile(program.args[0])) {
   decrypt.upload(program.args[0], (err, response) => {
     if (err) throw err;
 
-    urls = response.success.links.slice(1).join('\n');
+    urls = response.success.links.join('\n');
     storeUrlsInFile(urls);
   });
 } else if (isFile(program.args[0]) && !isDLCFile(program.args[0])) {
@@ -54,7 +54,7 @@ if (isFile(program.args[0]) && isDLCFile(program.args[0])) {
     decrypt.paste(content, (err, response) => {
       if (err) throw err;
 
-      urls = response.success.links.slice(1).join('\n');
+      urls = response.success.links.join('\n');
       storeUrlsInFile(urls);
     });
   });
@@ -62,7 +62,7 @@ if (isFile(program.args[0]) && isDLCFile(program.args[0])) {
   decrypt.container(program.args[0], (err, response) => {
     if (err) throw err;
 
-    urls = response.success.links.slice(1).join('\n');
+    urls = response.success.links.join('\n');
     storeUrlsInFile(urls);
   });
 } else {
