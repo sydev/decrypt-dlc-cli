@@ -1,70 +1,43 @@
-#! /usr/bin/env node
+#!/usr/bin/env node
 
 const decrypt = require('decrypt-dlc');
-const fs      = require('fs');
-const isFile  = require('is-file');
-const isUrl   = require('is-url');
-const path    = require('path');
+const fs = require('fs-extra');
+const isFile = require('is-file');
+const isUrl = require('is-url');
+const path = require('path');
 const program = require('commander');
+const signale = require('signale');
 
 
 program
   .version('1.0.0')
-  .usage('[options] <file>')
+  .usage('[options] <file|url>')
   .option('-o, --output <file>', 'File to store decrypted urls in. (Default: urls.txt)', path.join(process.cwd(), 'urls.txt'))
-  .parse(process.argv);
-
-let urls = null;
+	.parse(process.argv);
 
 /**
- * Store the string containing the urls in a file.
- * @param  {String} urls String of urls
+ * Check if a filepath has an allowed extension. Allowed are `.dlc`, `.ccf` and `.rsdf`.
+ * @param {String} filepath The filepath to check
+ * @returns {Boolean}
  */
-function storeUrlsInFile(urls) {
-  fs.writeFile(program.output, urls, (err) => {
-    if (err) throw err;
-    console.log(`Successfully stored urls in ${program.output}`);
-  });
-}
+const hasAllowedExtension = (filepath = '') => ['.dlc', '.ccf', '.rsdf'].indexOf(path.extname(filepath)) > -1;
+	
+const run = async () => {
+	const filepath = path.isAbsolute(program.output) ? program.output : path.resolve(process.cwd(), program.output);
+	const input = program.args[0];
 
-/**
- * Check if file has a .dlc extension
- * @param  {String}  file path to a file
- * @return {Boolean}      Checks wether if the file is a .dlc file or not
- */
-function isDLCFile(file) {
-  let ext = path.extname(file);
-  return (ext === '.dlc');
-}
+	let links = [];
 
+	try {
+		if (isFile(input) && hasAllowedExtension(input)) links = await decrypt.upload(input);
+		else if (isUrl(input)) links = await decrypt.container(input);
+		else throw new Error('Positional argument must be a filepath or an url.');
+	
+		await fs.outputFile(filepath, links.join('\n'));
+		signale.success(`Urls stored at ${filepath}`);
+	} catch (err) {
+		signale.fatal(err);
+	}
+};
 
-
-
-if (isFile(program.args[0]) && isDLCFile(program.args[0])) {
-  decrypt.upload(program.args[0], (err, response) => {
-    if (err) throw err;
-
-    urls = response.success.links.join('\n');
-    storeUrlsInFile(urls);
-  });
-} else if (isFile(program.args[0]) && !isDLCFile(program.args[0])) {
-  fs.readFile(program.args[0], 'utf-8', (err, content) => {
-    if (err) throw err;
-
-    decrypt.paste(content, (err, response) => {
-      if (err) throw err;
-
-      urls = response.success.links.join('\n');
-      storeUrlsInFile(urls);
-    });
-  });
-} else if (isUrl(program.args[0])) {
-  decrypt.container(program.args[0], (err, response) => {
-    if (err) throw err;
-
-    urls = response.success.links.join('\n');
-    storeUrlsInFile(urls);
-  });
-} else {
-  console.error('Parameter must be url or path to a file.');
-}
+run();

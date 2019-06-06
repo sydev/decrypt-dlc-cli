@@ -1,6 +1,6 @@
 {
   "name": "decrypt-dlc-cli",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "",
   "main": "lib/index.js",
   "bin": {
@@ -23,22 +23,23 @@
     "line"
   ],
   "author": "Dominik Winter <dominik.winter92@gmail.com>",
-  "license": "MIT",
-  "eslintConfig": {
-    "parserOptions": {
-      "ecmaVersion": 7,
-      "sourceType": "module"
-    }
-  },
+	"license": "MIT",
+	"engines": {
+		"node": ">=10.0.0"
+	},
   "dependencies": {
-    "commander": "^2.9.0",
-    "decrypt-dlc": "^1.0.0",
+    "commander": "^2.20.0",
+    "decrypt-dlc": "^2.0.0",
+    "fs-extra": "^8.0.1",
     "is-file": "^1.0.0",
-    "is-url": "^1.2.2"
+    "is-url": "^1.2.4",
+    "signale": "^1.4.0"
   },
   "devDependencies": {
-    "ava": "^0.17.0",
-    "execa": "^0.5.0"
+    "ava": "^2.0.0",
+    "eslint": "^5.16.0",
+    "eslint-plugin-node": "^9.1.0",
+    "execa": "^1.0.0"
   },
   "ava": {
     "files": [
