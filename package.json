@@ -23,10 +23,10 @@
     "line"
   ],
   "author": "Dominik Winter <dominik.winter92@gmail.com>",
-	"license": "MIT",
-	"engines": {
-		"node": ">=10.0.0"
-	},
+  "license": "MIT",
+  "engines": {
+    "node": ">=10.0.0"
+  },
   "dependencies": {
     "commander": "^2.20.0",
     "decrypt-dlc": "^2.0.0",
