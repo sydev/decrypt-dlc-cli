@@ -41,6 +41,9 @@
     "eslint-plugin-node": "^9.1.0",
     "execa": "^1.0.0"
   },
+  "resolutions": {
+    "acorn": "^6.4.1"
+  },
   "ava": {
     "files": [
       "test/test.js"
