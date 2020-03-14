@@ -43,6 +43,8 @@ $ npm test
 
 ## Release Notes
 
+- ```1.0.3```
+  - Update [minimist](https://www.npmjs.com/package/minimist) to `^1.2.2`
 - ```1.0.2```
   - Update [acorn](https://www.npmjs.com/package/acorn) to `^6.4.1`
 - ```1.0.0```
